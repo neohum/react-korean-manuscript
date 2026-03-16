@@ -23,7 +23,7 @@ function styleInject(css, { insertAt } = {}) {
 }
 
 // src/components/Manuscript.css
-styleInject('.manuscript-wrapper {\n  width: 100%;\n  max-width: 750px;\n  margin: 0 auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  flex: none;\n  min-height: max-content;\n  overflow: visible;\n}\n.manuscript-page-block {\n  width: 100%;\n  position: relative;\n  margin-bottom: 2rem;\n}\n.manuscript-page-block:last-child {\n  margin-bottom: 0;\n}\n.manuscript-row-nums {\n  position: absolute;\n  left: -1.6rem;\n  top: 0;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.manuscript-row-num {\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-size: 0.6rem;\n  color: #b0b8c8;\n  font-family: monospace;\n  padding-right: 3px;\n  letter-spacing: 0;\n}\n.manuscript-page-num {\n  text-align: center;\n  font-size: 0.75rem;\n  color: #94a3b8;\n  margin-top: 0.4rem;\n  letter-spacing: 0.05em;\n  font-family: var(--font-serif, serif);\n}\n.manuscript-grid {\n  display: grid;\n  grid-template-columns: repeat(10, 1fr);\n  grid-template-rows: repeat(10, 1fr);\n  gap: 0;\n  background-color: var(--manuscript-grid-line, #c8b89a);\n  border: 3px solid var(--manuscript-grid-line, #c8b89a);\n  height: 100%;\n  aspect-ratio: 1;\n}\n.manuscript-cell {\n  aspect-ratio: 1;\n  background-color: var(--manuscript-cell-bg, #fffdf7);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: var(--manuscript-font-serif, serif);\n  font-size: 1.35rem;\n  font-weight: 500;\n  color: var(--manuscript-text-color, #1a1a1a);\n  position: relative;\n  border-right: 1px solid var(--manuscript-grid-line, #c8b89a);\n  border-bottom: 1px solid var(--manuscript-grid-line, #c8b89a);\n  box-sizing: border-box;\n}\n.manuscript-cell.cell-row-end {\n  border-right: none;\n}\n.manuscript-cell:nth-child(n+41):nth-child(-n+50) {\n  border-bottom: 2px solid var(--manuscript-grid-line, #c8b89a);\n}\n.cell-punct {\n  position: relative;\n}\n.punct-char {\n  position: absolute;\n  left: 25%;\n  top: 75%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-open-quote {\n  position: relative;\n}\n.punct-char-open-quote {\n  position: absolute;\n  left: 75%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-close-quote {\n  position: relative;\n}\n.punct-char-close-quote {\n  position: absolute;\n  left: 25%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-ellipsis {\n  position: relative;\n}\n.ellipsis-char {\n  font-size: 0.62em;\n  letter-spacing: -0.05em;\n  line-height: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}\n.cell-auto-blank {\n  background-color: #f8fafc;\n  opacity: 0.85;\n}\n.cell-double {\n  position: relative;\n}\n.double-char {\n  font-size: 0.68em;\n  letter-spacing: -0.04em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n  font-weight: 500;\n}\n.cell-alpha-single {\n  font-size: 1.1em;\n  font-weight: 500;\n}\n.cell-indent {\n  background-color: #f0ede6;\n  position: relative;\n}\n.cell-indent::after {\n  content: "";\n  position: absolute;\n  inset: 20%;\n  border-radius: 2px;\n  background-color: #d4c9b0;\n  opacity: 0.5;\n}\n.indent-mark {\n  position: absolute;\n  color: #a89880;\n  font-size: 0.6em;\n  z-index: 2;\n  opacity: 0.7;\n}\n.space-mark-v {\n  color: #94a3b8;\n  font-size: 0.85em;\n  opacity: 0.7;\n}\n.cell-overflow-punct {\n  overflow: visible;\n}\n.overflow-phantom-cell {\n  position: absolute;\n  left: 100%;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 5;\n}\n.phantom-excl {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  font-size: 1em;\n}\n.manuscript-cell.cell-cursor,\n.manuscript-cell.cell-cursor-left {\n  background-color: #fffbeb;\n  cursor: text;\n}\n.manuscript-cell.cell-cursor::before,\n.manuscript-cell.cell-cursor-left::before {\n  content: "";\n  position: absolute;\n  left: 3px;\n  top: 10%;\n  bottom: 10%;\n  width: 2px;\n  background: #374151;\n  animation: rkm-blink-cursor 1s step-end infinite;\n  z-index: 5;\n}\n@keyframes rkm-blink-cursor {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0;\n  }\n}\n.manuscript-cell[onclick] {\n  cursor: text;\n}\n.cell-spell-error {\n  background-color: var(--manuscript-error-bg, #fef2f2) !important;\n  box-shadow: inset 0 -3px 0 0 var(--manuscript-error-color, #ef4444);\n}\n');
+styleInject('.manuscript-wrapper {\n  width: 100%;\n  max-width: 750px;\n  margin: 0 auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  flex: none;\n  min-height: max-content;\n  overflow: visible;\n}\n.manuscript-page-block {\n  width: 100%;\n  position: relative;\n  margin-bottom: 2rem;\n}\n.manuscript-page-block:last-child {\n  margin-bottom: 0;\n}\n.manuscript-row-nums {\n  position: absolute;\n  left: -1.6rem;\n  top: 0;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.manuscript-row-num {\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-size: 0.6rem;\n  color: #b0b8c8;\n  font-family: monospace;\n  padding-right: 3px;\n  letter-spacing: 0;\n}\n.manuscript-page-num {\n  text-align: center;\n  font-size: 0.75rem;\n  color: #94a3b8;\n  margin-top: 0.4rem;\n  letter-spacing: 0.05em;\n  font-family: var(--font-serif, serif);\n}\n.manuscript-grid {\n  display: grid;\n  grid-template-columns: repeat(10, 1fr);\n  grid-template-rows: repeat(10, 1fr);\n  gap: 0;\n  background-color: var(--manuscript-grid-line, #c8b89a);\n  border: 3px solid var(--manuscript-grid-line, #c8b89a);\n  height: 100%;\n  aspect-ratio: 1;\n}\n.manuscript-cell {\n  aspect-ratio: 1;\n  background-color: var(--manuscript-cell-bg, #fffdf7);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: var(--manuscript-font-serif, serif);\n  font-size: 1.35rem;\n  font-weight: 500;\n  color: var(--manuscript-text-color, #1a1a1a);\n  position: relative;\n  border-right: 1px solid var(--manuscript-grid-line, #c8b89a);\n  border-bottom: 1px solid var(--manuscript-grid-line, #c8b89a);\n  box-sizing: border-box;\n}\n.manuscript-cell.cell-row-end {\n  border-right: none;\n}\n.manuscript-cell:nth-child(n+41):nth-child(-n+50) {\n  border-bottom: 2px solid var(--manuscript-grid-line, #c8b89a);\n}\n.cell-punct {\n  position: relative;\n}\n.punct-char {\n  position: absolute;\n  left: 25%;\n  top: 75%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-open-quote {\n  position: relative;\n}\n.punct-char-open-quote {\n  position: absolute;\n  left: 75%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-close-quote {\n  position: relative;\n}\n.punct-char-close-quote {\n  position: absolute;\n  left: 25%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-ellipsis {\n  position: relative;\n}\n.ellipsis-char {\n  font-size: 0.62em;\n  letter-spacing: -0.05em;\n  line-height: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}\n.cell-auto-blank {\n  background-color: #f8fafc;\n  opacity: 0.85;\n}\n.cell-double {\n  position: relative;\n}\n.double-char {\n  font-size: 0.68em;\n  letter-spacing: -0.04em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n  font-weight: 500;\n}\n.cell-alpha-single {\n  font-size: 1.1em;\n  font-weight: 500;\n}\n.cell-indent {\n  background-color: #f0ede6;\n  position: relative;\n}\n.cell-indent::after {\n  content: "";\n  position: absolute;\n  inset: 20%;\n  border-radius: 2px;\n  background-color: #d4c9b0;\n  opacity: 0.5;\n}\n.indent-mark {\n  position: absolute;\n  color: #a89880;\n  font-size: 0.6em;\n  z-index: 2;\n  opacity: 0.7;\n}\n.space-mark-v {\n  color: #94a3b8;\n  font-size: 0.85em;\n  opacity: 0.7;\n}\n.cell-overflow-punct {\n  overflow: visible;\n}\n.overflow-phantom-cell {\n  position: absolute;\n  left: 100%;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 5;\n}\n.phantom-excl {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  font-size: 1em;\n}\n.manuscript-cell.cell-cursor,\n.manuscript-cell.cell-cursor-left {\n  background-color: #fffbeb;\n  cursor: text;\n}\n.manuscript-cell.cell-cursor::before,\n.manuscript-cell.cell-cursor-left::before {\n  content: "";\n  position: absolute;\n  left: 3px;\n  top: 10%;\n  bottom: 10%;\n  width: 2px;\n  background: #374151;\n  animation: rkm-blink-cursor 1s step-end infinite;\n  z-index: 5;\n}\n@keyframes rkm-blink-cursor {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0;\n  }\n}\n.manuscript-cell[onclick] {\n  cursor: text;\n}\n.cell-spell-error {\n  background-color: var(--manuscript-error-bg, #fef2f2) !important;\n  box-shadow: inset 0 -3px 0 0 var(--manuscript-error-color, #ef4444);\n}\n.cell-tts-highlight {\n  background-color: var(--manuscript-highlight-bg, #fef9c3) !important;\n  box-shadow: inset 0 0 0 2px var(--manuscript-highlight-color, #f59e0b);\n  transition: background-color 0.15s ease;\n}\n');
 
 // src/core/constants.ts
 var PUNCT = /* @__PURE__ */ new Set([".", ",", "\u3002", "\u3001", "\uFF0E", "\uFF0C", "!", "?", "\uFF01", "\uFF1F"]);
@@ -314,6 +314,7 @@ function Manuscript({
   sglQuoteInit = 0,
   showRowNums = false,
   errorCells = /* @__PURE__ */ new Set(),
+  highlightCells = null,
   pageIndex = null
 }) {
   const blockSize = columns * rows;
@@ -330,6 +331,7 @@ function Manuscript({
     const isRowEnd = (index + 1) % columns === 0;
     const rowEndClass = isRowEnd ? " cell-row-end" : "";
     const errorClass = errorCells.has(index) ? " cell-spell-error" : "";
+    const hlClass = highlightCells && highlightCells.has(index) ? " cell-tts-highlight" : "";
     if (typeof cell === "object" && cell !== null && "char" in cell) {
       const oc = cell;
       const opChar = oc.overflowPunct || "";
@@ -340,7 +342,7 @@ function Manuscript({
       return /* @__PURE__ */ jsxs(
         "div",
         {
-          className: `manuscript-cell cell-overflow-punct${basePunctClass}${cursorClass}${rowEndClass}${errorClass}`,
+          className: `manuscript-cell cell-overflow-punct${basePunctClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`,
           onClick: handleClick,
           children: [
             baseIsSmallPunct ? /* @__PURE__ */ jsx("span", { className: "punct-char", children: oc.char }) : oc.char,
@@ -354,45 +356,45 @@ function Manuscript({
       );
     }
     if (typeof cell === "object" && cell !== null && "ellipsis" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-ellipsis${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: /* @__PURE__ */ jsx("span", { className: "ellipsis-char", children: cell.ellipsis }) }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-ellipsis${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: /* @__PURE__ */ jsx("span", { className: "ellipsis-char", children: cell.ellipsis }) }, index);
     }
     if (typeof cell === "object" && cell !== null && "punctWithQuote" in cell) {
-      return /* @__PURE__ */ jsxs("div", { className: `manuscript-cell cell-punct${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: [
+      return /* @__PURE__ */ jsxs("div", { className: `manuscript-cell cell-punct${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: [
         /* @__PURE__ */ jsx("span", { className: "punct-char", children: cell.punct }),
         /* @__PURE__ */ jsx("span", { className: "punct-char-close-quote", children: cell.quote })
       ] }, index);
     }
     if (typeof cell === "object" && cell !== null && "excl" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: cell.excl }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: cell.excl }, index);
     }
     if (typeof cell === "object" && cell !== null && "autoBlank" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick }, index);
     }
     if (typeof cell === "object" && cell !== null && "underflow" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick }, index);
     }
     if (typeof cell === "object" && cell !== null && "indent" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-indent${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: showSpaceMarks && /* @__PURE__ */ jsx("span", { className: "indent-mark", children: "\u21B5" }) }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-indent${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: showSpaceMarks && /* @__PURE__ */ jsx("span", { className: "indent-mark", children: "\u21B5" }) }, index);
     }
     if (typeof cell === "object" && cell !== null && "quoteChar" in cell) {
       const qClass = cell.isOpen ? " cell-punct-open-quote" : " cell-punct-close-quote";
       const qSpanClass = cell.isOpen ? "punct-char-open-quote" : "punct-char-close-quote";
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell${qClass}${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: /* @__PURE__ */ jsx("span", { className: qSpanClass, children: cell.quoteChar }) }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell${qClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: /* @__PURE__ */ jsx("span", { className: qSpanClass, children: cell.quoteChar }) }, index);
     }
     if (typeof cell === "object" && cell !== null && "bracketChar" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: cell.bracketChar }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: cell.bracketChar }, index);
     }
     if (typeof cell === "object" && cell !== null && "double" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-double${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: /* @__PURE__ */ jsx("span", { className: "double-char", children: cell.double }) }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-double${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: /* @__PURE__ */ jsx("span", { className: "double-char", children: cell.double }) }, index);
     }
     if (typeof cell === "object" && cell !== null && "single" in cell) {
-      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-alpha-single${cursorClass}${rowEndClass}${errorClass}`, onClick: handleClick, children: cell.single }, index);
+      return /* @__PURE__ */ jsx("div", { className: `manuscript-cell cell-alpha-single${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: cell.single }, index);
     }
     const isSmallPunct = typeof cell === "string" && SMALL_PUNCT.has(cell);
     return /* @__PURE__ */ jsx(
       "div",
       {
-        className: `manuscript-cell${isSmallPunct ? " cell-punct" : ""}${cursorClass}${rowEndClass}${errorClass}`,
+        className: `manuscript-cell${isSmallPunct ? " cell-punct" : ""}${cursorClass}${rowEndClass}${errorClass}${hlClass}`,
         onClick: handleClick,
         children: cell === " " ? showSpaceMarks ? /* @__PURE__ */ jsx("span", { className: "space-mark-v", children: "v" }) : "" : isSmallPunct ? /* @__PURE__ */ jsx("span", { className: "punct-char", children: cell }) : cell
       },

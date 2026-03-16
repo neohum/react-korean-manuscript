@@ -18,6 +18,7 @@ export function Manuscript({
   sglQuoteInit = 0,
   showRowNums = false,
   errorCells = new Set<number>(),
+  highlightCells = null,
   pageIndex = null,
 }: ManuscriptProps): React.ReactElement {
   const blockSize = columns * rows;
@@ -39,6 +40,7 @@ export function Manuscript({
     const isRowEnd = (index + 1) % columns === 0;
     const rowEndClass = isRowEnd ? ' cell-row-end' : '';
     const errorClass = errorCells.has(index) ? ' cell-spell-error' : '';
+    const hlClass = (highlightCells && highlightCells.has(index)) ? ' cell-tts-highlight' : '';
 
     // overflow punct / quote → 팬텀 셀
     if (typeof cell === 'object' && cell !== null && 'char' in cell) {
@@ -51,7 +53,7 @@ export function Manuscript({
       return (
         <div
           key={index}
-          className={`manuscript-cell cell-overflow-punct${basePunctClass}${cursorClass}${rowEndClass}${errorClass}`}
+          className={`manuscript-cell cell-overflow-punct${basePunctClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`}
           onClick={handleClick}
         >
           {baseIsSmallPunct
@@ -74,7 +76,7 @@ export function Manuscript({
     // 말줄임표
     if (typeof cell === 'object' && cell !== null && 'ellipsis' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-ellipsis${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell cell-ellipsis${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           <span className="ellipsis-char">{cell.ellipsis}</span>
         </div>
       );
@@ -83,7 +85,7 @@ export function Manuscript({
     // 마침표/쉼표 + 닫는 따옴표 합침 셀
     if (typeof cell === 'object' && cell !== null && 'punctWithQuote' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-punct${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell cell-punct${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           <span className="punct-char">{cell.punct}</span>
           <span className="punct-char-close-quote">{cell.quote}</span>
         </div>
@@ -93,7 +95,7 @@ export function Manuscript({
     // 느낌표·물음표
     if (typeof cell === 'object' && cell !== null && 'excl' in cell) {
       return (
-        <div key={index} className={`manuscript-cell${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           {cell.excl}
         </div>
       );
@@ -102,21 +104,21 @@ export function Manuscript({
     // 자동 빈 칸
     if (typeof cell === 'object' && cell !== null && 'autoBlank' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick} />
+        <div key={index} className={`manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick} />
       );
     }
 
     // 언더플로우 빈 칸
     if (typeof cell === 'object' && cell !== null && 'underflow' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick} />
+        <div key={index} className={`manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick} />
       );
     }
 
     // 들여쓰기 칸
     if (typeof cell === 'object' && cell !== null && 'indent' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-indent${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell cell-indent${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           {showSpaceMarks && <span className="indent-mark">↵</span>}
         </div>
       );
@@ -127,7 +129,7 @@ export function Manuscript({
       const qClass = cell.isOpen ? ' cell-punct-open-quote' : ' cell-punct-close-quote';
       const qSpanClass = cell.isOpen ? 'punct-char-open-quote' : 'punct-char-close-quote';
       return (
-        <div key={index} className={`manuscript-cell${qClass}${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell${qClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           <span className={qSpanClass}>{cell.quoteChar}</span>
         </div>
       );
@@ -136,7 +138,7 @@ export function Manuscript({
     // 괄호
     if (typeof cell === 'object' && cell !== null && 'bracketChar' in cell) {
       return (
-        <div key={index} className={`manuscript-cell${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           {cell.bracketChar}
         </div>
       );
@@ -145,7 +147,7 @@ export function Manuscript({
     // 영문자 2자 1칸
     if (typeof cell === 'object' && cell !== null && 'double' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-double${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell cell-double${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           <span className="double-char">{cell.double}</span>
         </div>
       );
@@ -154,7 +156,7 @@ export function Manuscript({
     // 단독 알파벳 1칸
     if (typeof cell === 'object' && cell !== null && 'single' in cell) {
       return (
-        <div key={index} className={`manuscript-cell cell-alpha-single${cursorClass}${rowEndClass}${errorClass}`} onClick={handleClick}>
+        <div key={index} className={`manuscript-cell cell-alpha-single${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
           {cell.single}
         </div>
       );
@@ -165,7 +167,7 @@ export function Manuscript({
     return (
       <div
         key={index}
-        className={`manuscript-cell${isSmallPunct ? ' cell-punct' : ''}${cursorClass}${rowEndClass}${errorClass}`}
+        className={`manuscript-cell${isSmallPunct ? ' cell-punct' : ''}${cursorClass}${rowEndClass}${errorClass}${hlClass}`}
         onClick={handleClick}
       >
         {cell === ' '

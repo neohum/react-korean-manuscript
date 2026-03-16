@@ -83,11 +83,13 @@ interface ManuscriptProps {
     showRowNums?: boolean;
     /** 맞춤법 오류 셀 인덱스 집합 */
     errorCells?: Set<number>;
+    /** TTS 읽기 중 강조할 셀 인덱스 집합 */
+    highlightCells?: Set<number> | null;
     /** 특정 페이지만 렌더링 (썸네일 모드) */
     pageIndex?: number | null;
 }
 
-declare function Manuscript({ text, columns, rows, showSpaceMarks, cursorCell, cursorSide, onCellClick, dblQuoteInit, sglQuoteInit, showRowNums, errorCells, pageIndex, }: ManuscriptProps): React.ReactElement;
+declare function Manuscript({ text, columns, rows, showSpaceMarks, cursorCell, cursorSide, onCellClick, dblQuoteInit, sglQuoteInit, showRowNums, errorCells, highlightCells, pageIndex, }: ManuscriptProps): React.ReactElement;
 
 interface CursorMapsOptions {
     /**

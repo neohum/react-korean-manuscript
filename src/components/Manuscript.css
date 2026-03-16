@@ -235,3 +235,10 @@
     background-color: var(--manuscript-error-bg, #fef2f2) !important;
     box-shadow: inset 0 -3px 0 0 var(--manuscript-error-color, #ef4444);
 }
+
+/* TTS 읽기 중 강조 */
+.cell-tts-highlight {
+    background-color: var(--manuscript-highlight-bg, #fef9c3) !important;
+    box-shadow: inset 0 0 0 2px var(--manuscript-highlight-color, #f59e0b);
+    transition: background-color 0.15s ease;
+}
