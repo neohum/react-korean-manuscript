@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/works/transcription/**)",
+      "Read(//d//**)",
+      "Bash(find:*)",
+      "Bash(cd:*)",
+      "Bash(rm:*)",
+      "Bash(npm whoami:*)"
+    ]
+  }
+}

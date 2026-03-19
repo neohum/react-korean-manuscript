@@ -408,7 +408,16 @@ function Manuscript({
       ] }, index);
     }
     if (typeof cell === "object" && cell !== null && "excl" in cell) {
-      return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: cell.excl }, index);
+      const exclCell = cell;
+      const opChar = exclCell.overflowPunct || "";
+      const oqChar = exclCell.overflowQuote || "";
+      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `manuscript-cell cell-excl cell-overflow-punct${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: [
+        exclCell.excl,
+        (opChar || oqChar) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "overflow-phantom-cell", children: [
+          opChar && (EXCL_PUNCT_SET.has(opChar) ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "phantom-excl", children: opChar }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "punct-char", children: opChar })),
+          oqChar && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "punct-char-open-quote", children: oqChar })
+        ] })
+      ] }, index);
     }
     if (typeof cell === "object" && cell !== null && "autoBlank" in cell) {
       return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `manuscript-cell cell-auto-blank${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick }, index);
@@ -425,7 +434,9 @@ function Manuscript({
       return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `manuscript-cell${qClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: qSpanClass, children: cell.quoteChar }) }, index);
     }
     if (typeof cell === "object" && cell !== null && "bracketChar" in cell) {
-      return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: cell.bracketChar }, index);
+      const bClass = cell.isOpen ? " cell-punct-open-quote" : " cell-punct-close-quote";
+      const bSpanClass = cell.isOpen ? "punct-char-open-quote" : "punct-char-close-quote";
+      return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `manuscript-cell${bClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: bSpanClass, children: cell.bracketChar }) }, index);
     }
     if (typeof cell === "object" && cell !== null && "double" in cell) {
       return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `manuscript-cell cell-double${cursorClass}${rowEndClass}${errorClass}${hlClass}`, onClick: handleClick, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "double-char", children: cell.double }) }, index);

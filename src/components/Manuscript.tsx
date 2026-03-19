@@ -92,11 +92,24 @@ export function Manuscript({
       );
     }
 
-    // 느낌표·물음표
+    // 느낌표·물음표 (overflow punct/quote 포함 가능)
     if (typeof cell === 'object' && cell !== null && 'excl' in cell) {
+      const exclCell = cell as any;
+      const opChar = exclCell.overflowPunct || '';
+      const oqChar = exclCell.overflowQuote || '';
       return (
-        <div key={index} className={`manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
-          {cell.excl}
+        <div key={index} className={`manuscript-cell cell-excl cell-overflow-punct${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
+          {exclCell.excl}
+          {(opChar || oqChar) && (
+            <div className="overflow-phantom-cell">
+              {opChar && (
+                EXCL_PUNCT_SET.has(opChar)
+                  ? <span className="phantom-excl">{opChar}</span>
+                  : <span className="punct-char">{opChar}</span>
+              )}
+              {oqChar && <span className="punct-char-open-quote">{oqChar}</span>}
+            </div>
+          )}
         </div>
       );
     }
@@ -135,11 +148,13 @@ export function Manuscript({
       );
     }
 
-    // 괄호
+    // 괄호 (여는 괄호: 우상단, 닫는 괄호: 좌상단)
     if (typeof cell === 'object' && cell !== null && 'bracketChar' in cell) {
+      const bClass = cell.isOpen ? ' cell-punct-open-quote' : ' cell-punct-close-quote';
+      const bSpanClass = cell.isOpen ? 'punct-char-open-quote' : 'punct-char-close-quote';
       return (
-        <div key={index} className={`manuscript-cell${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
-          {cell.bracketChar}
+        <div key={index} className={`manuscript-cell${bClass}${cursorClass}${rowEndClass}${errorClass}${hlClass}`} onClick={handleClick}>
+          <span className={bSpanClass}>{cell.bracketChar}</span>
         </div>
       );
     }
