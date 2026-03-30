@@ -1,8 +1,8 @@
 {
   "name": "react-korean-manuscript",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "한국어 원고지 React 컴포넌트 및 유틸리티 / Korean manuscript paper React components and utilities",
-  "author": "neohum<neohum77@gmail.com",
+  "author": "neohum <neohum77@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/neohum/react-korean-manuscript"

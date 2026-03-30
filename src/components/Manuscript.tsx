@@ -1,6 +1,6 @@
 import React from 'react';
 import './Manuscript.css';
-import { buildFormattedCells, BLOCK_SIZE, DEFAULT_COLUMNS, DEFAULT_ROWS } from '../core/formatter';
+import { buildFormattedCells, DEFAULT_COLUMNS, DEFAULT_ROWS } from '../core/formatter';
 import { SMALL_PUNCT, EXCL_PUNCT } from '../core/constants';
 import type { ManuscriptProps, FormattedCell, OverflowPunctCell } from '../types';
 
@@ -210,7 +210,7 @@ export function Manuscript({
       {blocksToRender.map((blockCells, localIdx) => {
         const actualPageIndex =
           pageIndex !== null && pageIndex !== undefined ? pageIndex : localIdx;
-        const globalIndexOffset = actualPageIndex * BLOCK_SIZE;
+        const globalIndexOffset = actualPageIndex * blockSize;
         return (
           <div key={`page-${actualPageIndex}`} className="manuscript-page-block">
             {showRowNums && (

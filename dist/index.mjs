@@ -419,7 +419,7 @@ function Manuscript({
   const blocksToRender = pageIndex !== null && pageIndex !== void 0 ? pageBlocks[pageIndex] ? [pageBlocks[pageIndex]] : [[]] : pageBlocks;
   return /* @__PURE__ */ jsx("div", { className: "manuscript-wrapper", children: blocksToRender.map((blockCells, localIdx) => {
     const actualPageIndex = pageIndex !== null && pageIndex !== void 0 ? pageIndex : localIdx;
-    const globalIndexOffset = actualPageIndex * BLOCK_SIZE;
+    const globalIndexOffset = actualPageIndex * blockSize;
     return /* @__PURE__ */ jsxs("div", { className: "manuscript-page-block", children: [
       showRowNums && /* @__PURE__ */ jsx("div", { className: "manuscript-row-nums", children: Array.from({ length: rows }, (_, i) => /* @__PURE__ */ jsx("div", { className: "manuscript-row-num", children: i + 1 }, i)) }),
       /* @__PURE__ */ jsx(
