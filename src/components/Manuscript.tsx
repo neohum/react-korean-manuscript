@@ -20,9 +20,18 @@ export function Manuscript({
   errorCells = new Set<number>(),
   highlightCells = null,
   pageIndex = null,
+  wordWrapMode = 'char',
+  kinsokuMode = 'hang',
 }: ManuscriptProps): React.ReactElement {
   const blockSize = columns * rows;
-  const formattedCells = buildFormattedCells(text, { dblQuoteInit, sglQuoteInit, columns, rows });
+  const formattedCells = buildFormattedCells(text, {
+    dblQuoteInit,
+    sglQuoteInit,
+    columns,
+    rows,
+    wordWrapMode,
+    kinsokuMode,
+  });
 
   const renderCell = (cell: FormattedCell, index: number): React.ReactElement => {
     const hasCursor = cursorCell === index;
@@ -206,7 +215,11 @@ export function Manuscript({
       : pageBlocks;
 
   return (
-    <div className="manuscript-wrapper">
+    <div
+      className="manuscript-wrapper"
+      data-word-wrap-mode={wordWrapMode}
+      data-kinsoku-mode={kinsokuMode}
+    >
       {blocksToRender.map((blockCells, localIdx) => {
         const actualPageIndex =
           pageIndex !== null && pageIndex !== undefined ? pageIndex : localIdx;
@@ -216,7 +229,7 @@ export function Manuscript({
             {showRowNums && (
               <div className="manuscript-row-nums">
                 {Array.from({ length: rows }, (_, i) => (
-                  <div key={i} className="manuscript-row-num">{i + 1}</div>
+                  <div key={i} className="manuscript-row-num rkm-badge-nowrap">{i + 1}</div>
                 ))}
               </div>
             )}
@@ -229,7 +242,7 @@ export function Manuscript({
             >
               {blockCells.map((cell, i) => renderCell(cell, globalIndexOffset + i))}
             </div>
-            <div className="manuscript-page-num">- {actualPageIndex + 1} -</div>
+            <div className="manuscript-page-num rkm-badge-nowrap">- {actualPageIndex + 1} -</div>
           </div>
         );
       })}
