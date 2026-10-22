@@ -24,7 +24,13 @@ __export(index_exports, {
   BLOCK_SIZE: () => BLOCK_SIZE,
   CLOSE_BRACKETS: () => CLOSE_BRACKETS,
   CLOSE_QUOTE: () => CLOSE_QUOTE,
+  DEFAULT_COLUMNS: () => DEFAULT_COLUMNS,
+  DEFAULT_ROWS: () => DEFAULT_ROWS,
   EXCL_PUNCT: () => EXCL_PUNCT,
+  KOREAN_TYPOGRAPHY_CLASSES: () => KOREAN_TYPOGRAPHY_CLASSES,
+  KOREAN_TYPOGRAPHY_CSS_RULES: () => KOREAN_TYPOGRAPHY_CSS_RULES,
+  KOREAN_TYPOGRAPHY_STYLES: () => KOREAN_TYPOGRAPHY_STYLES,
+  KOREAN_TYPOGRAPHY_STYLESHEET: () => KOREAN_TYPOGRAPHY_STYLESHEET,
   Manuscript: () => Manuscript,
   ManuscriptDefault: () => Manuscript_default,
   OPEN_BRACKETS: () => OPEN_BRACKETS,
@@ -35,11 +41,18 @@ __export(index_exports, {
   buildCursorMaps: () => buildCursorMaps,
   buildFormattedCells: () => buildFormattedCells,
   canGroupWithNext: () => canGroupWithNext,
+  countEojeolUnderflowCells: () => countEojeolUnderflowCells,
+  countKinsokuPushUnderflowCells: () => countKinsokuPushUnderflowCells,
+  getKoreanTypographyClass: () => getKoreanTypographyClass,
+  getKoreanTypographyCss: () => getKoreanTypographyCss,
+  getKoreanTypographyStyle: () => getKoreanTypographyStyle,
+  isEojeolStart: () => isEojeolStart,
   isLineEndProhibited: () => isLineEndProhibited,
   isLineStartProhibited: () => isLineStartProhibited,
   isLowerAlpha: () => isLowerAlpha,
   isNumber: () => isNumber,
-  isUpperAlpha: () => isUpperAlpha
+  isUpperAlpha: () => isUpperAlpha,
+  measureLogicalUnit: () => measureLogicalUnit
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -66,7 +79,7 @@ function styleInject(css, { insertAt } = {}) {
 }
 
 // src/components/Manuscript.css
-styleInject('.manuscript-wrapper {\n  width: 100%;\n  max-width: 750px;\n  margin: 0 auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  flex: none;\n  min-height: max-content;\n  overflow: visible;\n}\n.manuscript-page-block {\n  width: 100%;\n  position: relative;\n  margin-bottom: 2rem;\n}\n.manuscript-page-block:last-child {\n  margin-bottom: 0;\n}\n.manuscript-row-nums {\n  position: absolute;\n  left: -1.6rem;\n  top: 0;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.manuscript-row-num {\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-size: 0.6rem;\n  color: #b0b8c8;\n  font-family: monospace;\n  padding-right: 3px;\n  letter-spacing: 0;\n}\n.manuscript-page-num {\n  text-align: center;\n  font-size: 0.75rem;\n  color: #94a3b8;\n  margin-top: 0.4rem;\n  letter-spacing: 0.05em;\n  font-family: var(--font-serif, serif);\n}\n.manuscript-grid {\n  display: grid;\n  grid-template-columns: repeat(10, 1fr);\n  grid-template-rows: repeat(10, 1fr);\n  gap: 0;\n  background-color: var(--manuscript-grid-line, #c8b89a);\n  border: 3px solid var(--manuscript-grid-line, #c8b89a);\n  height: 100%;\n  aspect-ratio: 1;\n}\n.manuscript-cell {\n  aspect-ratio: 1;\n  background-color: var(--manuscript-cell-bg, #fffdf7);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: var(--manuscript-font-serif, serif);\n  font-size: 1.35rem;\n  font-weight: 500;\n  color: var(--manuscript-text-color, #1a1a1a);\n  position: relative;\n  border-right: 1px solid var(--manuscript-grid-line, #c8b89a);\n  border-bottom: 1px solid var(--manuscript-grid-line, #c8b89a);\n  box-sizing: border-box;\n}\n.manuscript-cell.cell-row-end {\n  border-right: none;\n}\n.manuscript-cell:nth-child(n+41):nth-child(-n+50) {\n  border-bottom: 2px solid var(--manuscript-grid-line, #c8b89a);\n}\n.cell-punct {\n  position: relative;\n}\n.punct-char {\n  position: absolute;\n  left: 25%;\n  top: 75%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-open-quote {\n  position: relative;\n}\n.punct-char-open-quote {\n  position: absolute;\n  left: 75%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-close-quote {\n  position: relative;\n}\n.punct-char-close-quote {\n  position: absolute;\n  left: 25%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-ellipsis {\n  position: relative;\n}\n.ellipsis-char {\n  font-size: 0.62em;\n  letter-spacing: -0.05em;\n  line-height: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}\n.cell-auto-blank {\n  background-color: #f8fafc;\n  opacity: 0.85;\n}\n.cell-double {\n  position: relative;\n}\n.double-char {\n  font-size: 0.68em;\n  letter-spacing: -0.04em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n  font-weight: 500;\n}\n.cell-alpha-single {\n  font-size: 1.1em;\n  font-weight: 500;\n}\n.cell-indent {\n  background-color: #f0ede6;\n  position: relative;\n}\n.cell-indent::after {\n  content: "";\n  position: absolute;\n  inset: 20%;\n  border-radius: 2px;\n  background-color: #d4c9b0;\n  opacity: 0.5;\n}\n.indent-mark {\n  position: absolute;\n  color: #a89880;\n  font-size: 0.6em;\n  z-index: 2;\n  opacity: 0.7;\n}\n.space-mark-v {\n  color: #94a3b8;\n  font-size: 0.85em;\n  opacity: 0.7;\n}\n.cell-overflow-punct {\n  overflow: visible;\n}\n.overflow-phantom-cell {\n  position: absolute;\n  left: 100%;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 5;\n}\n.phantom-excl {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  font-size: 1em;\n}\n.manuscript-cell.cell-cursor,\n.manuscript-cell.cell-cursor-left {\n  background-color: #fffbeb;\n  cursor: text;\n}\n.manuscript-cell.cell-cursor::before,\n.manuscript-cell.cell-cursor-left::before {\n  content: "";\n  position: absolute;\n  left: 3px;\n  top: 10%;\n  bottom: 10%;\n  width: 2px;\n  background: #374151;\n  animation: rkm-blink-cursor 1s step-end infinite;\n  z-index: 5;\n}\n@keyframes rkm-blink-cursor {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0;\n  }\n}\n.manuscript-cell[onclick] {\n  cursor: text;\n}\n.cell-spell-error {\n  background-color: var(--manuscript-error-bg, #fef2f2) !important;\n  box-shadow: inset 0 -3px 0 0 var(--manuscript-error-color, #ef4444);\n}\n.cell-tts-highlight {\n  background-color: var(--manuscript-highlight-bg, #fef9c3) !important;\n  box-shadow: inset 0 0 0 2px var(--manuscript-highlight-color, #f59e0b);\n  transition: background-color 0.15s ease;\n}\n');
+styleInject('.manuscript-wrapper {\n  width: 100%;\n  max-width: 750px;\n  margin: 0 auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: flex-start;\n  flex: none;\n  min-height: max-content;\n  overflow: visible;\n}\n.manuscript-page-block {\n  width: 100%;\n  position: relative;\n  margin-bottom: 2rem;\n}\n.manuscript-page-block:last-child {\n  margin-bottom: 0;\n}\n.manuscript-row-nums {\n  position: absolute;\n  left: -1.6rem;\n  top: 0;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n.manuscript-row-num {\n  flex: 1;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  font-size: 0.6rem;\n  color: #b0b8c8;\n  font-family: monospace;\n  padding-right: 3px;\n  letter-spacing: 0;\n  white-space: nowrap;\n}\n.manuscript-page-num {\n  text-align: center;\n  font-size: 0.75rem;\n  color: #94a3b8;\n  margin-top: 0.4rem;\n  letter-spacing: 0.05em;\n  font-family: var(--font-serif, serif);\n  white-space: nowrap;\n}\n.manuscript-grid {\n  display: grid;\n  grid-template-columns: repeat(10, 1fr);\n  grid-template-rows: repeat(10, 1fr);\n  gap: 0;\n  background-color: var(--manuscript-grid-line, #c8b89a);\n  border: 3px solid var(--manuscript-grid-line, #c8b89a);\n  height: 100%;\n  aspect-ratio: 1;\n}\n.manuscript-cell {\n  aspect-ratio: 1;\n  background-color: var(--manuscript-cell-bg, #fffdf7);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: var(--manuscript-font-serif, serif);\n  font-size: 1.35rem;\n  font-weight: 500;\n  color: var(--manuscript-text-color, #1a1a1a);\n  position: relative;\n  border-right: 1px solid var(--manuscript-grid-line, #c8b89a);\n  border-bottom: 1px solid var(--manuscript-grid-line, #c8b89a);\n  box-sizing: border-box;\n}\n.manuscript-cell.cell-row-end {\n  border-right: none;\n}\n.manuscript-cell:nth-child(n+41):nth-child(-n+50) {\n  border-bottom: 2px solid var(--manuscript-grid-line, #c8b89a);\n}\n.cell-punct {\n  position: relative;\n}\n.punct-char {\n  position: absolute;\n  left: 25%;\n  top: 75%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-open-quote {\n  position: relative;\n}\n.punct-char-open-quote {\n  position: absolute;\n  left: 75%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-punct-close-quote {\n  position: relative;\n}\n.punct-char-close-quote {\n  position: absolute;\n  left: 25%;\n  top: 25%;\n  transform: translate(-50%, -50%);\n  font-size: 0.75em;\n}\n.cell-ellipsis {\n  position: relative;\n}\n.ellipsis-char {\n  font-size: 0.62em;\n  letter-spacing: -0.05em;\n  line-height: 1;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}\n.cell-auto-blank {\n  background-color: #f8fafc;\n  opacity: 0.85;\n}\n.cell-double {\n  position: relative;\n}\n.double-char {\n  font-size: 0.68em;\n  letter-spacing: -0.04em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n  font-weight: 500;\n}\n.cell-alpha-single {\n  font-size: 1.1em;\n  font-weight: 500;\n}\n.cell-indent {\n  background-color: #f0ede6;\n  position: relative;\n}\n.cell-indent::after {\n  content: "";\n  position: absolute;\n  inset: 20%;\n  border-radius: 2px;\n  background-color: #d4c9b0;\n  opacity: 0.5;\n}\n.indent-mark {\n  position: absolute;\n  color: #a89880;\n  font-size: 0.6em;\n  z-index: 2;\n  opacity: 0.7;\n}\n.space-mark-v {\n  color: #94a3b8;\n  font-size: 0.85em;\n  opacity: 0.7;\n}\n.cell-overflow-punct {\n  overflow: visible;\n}\n.overflow-phantom-cell {\n  position: absolute;\n  left: 100%;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 5;\n}\n.phantom-excl {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  font-size: 1em;\n}\n.manuscript-cell.cell-cursor,\n.manuscript-cell.cell-cursor-left {\n  background-color: #fffbeb;\n  cursor: text;\n}\n.manuscript-cell.cell-cursor::before,\n.manuscript-cell.cell-cursor-left::before {\n  content: "";\n  position: absolute;\n  left: 3px;\n  top: 10%;\n  bottom: 10%;\n  width: 2px;\n  background: #374151;\n  animation: rkm-blink-cursor 1s step-end infinite;\n  z-index: 5;\n}\n@keyframes rkm-blink-cursor {\n  0%, 100% {\n    opacity: 1;\n  }\n  50% {\n    opacity: 0;\n  }\n}\n.manuscript-cell[onclick] {\n  cursor: text;\n}\n.cell-spell-error {\n  background-color: var(--manuscript-error-bg, #fef2f2) !important;\n  box-shadow: inset 0 -3px 0 0 var(--manuscript-error-color, #ef4444);\n}\n.cell-tts-highlight {\n  background-color: var(--manuscript-highlight-bg, #fef9c3) !important;\n  box-shadow: inset 0 0 0 2px var(--manuscript-highlight-color, #f59e0b);\n  transition: background-color 0.15s ease;\n}\n.rkm-prose-ko {\n  word-break: keep-all;\n  overflow-wrap: break-word;\n  text-wrap: pretty;\n}\n.rkm-heading-balance {\n  word-break: keep-all;\n  overflow-wrap: break-word;\n  text-wrap: balance;\n}\n.rkm-badge-nowrap {\n  white-space: nowrap;\n  flex-shrink: 0;\n}\n.rkm-pre-line {\n  white-space: pre-line;\n  word-break: keep-all;\n  overflow-wrap: break-word;\n  text-wrap: pretty;\n}\n');
 
 // src/core/constants.ts
 var PUNCT = /* @__PURE__ */ new Set([".", ",", "\u3002", "\u3001", "\uFF0E", "\uFF0C", "!", "?", "\uFF01", "\uFF1F"]);
@@ -148,6 +161,180 @@ function advanceQuoteCount(c, dblQ, sglQ) {
   }
   return [dblQ, sglQ];
 }
+function isEojeolStart(chars, index) {
+  const c = chars[index];
+  if (!c || c === " " || c === "\n") return false;
+  if (index === 0) return true;
+  const prev = chars[index - 1];
+  return prev === " " || prev === "\n";
+}
+function measureLogicalUnit(chars, index, dblQ, sglQ, prevIsExcl = false) {
+  const c = chars[index];
+  const next = chars[index + 1];
+  if (SMALL_PUNCT.has(c) && next && QUOTE_CHARS.has(next) && CLOSE_BRACKETS.has(next)) {
+    const isDbl = next === '"' || next === "\u201C" || next === "\u201D" || next === "\u201E";
+    const nextIsClose = isDbl ? dblQ % 2 !== 0 : sglQ % 2 !== 0;
+    if (nextIsClose) {
+      const [nextDblQ2, nextSglQ2] = advanceQuoteCount(next, dblQ, sglQ);
+      return {
+        charSpan: 2,
+        cellSpan: 1,
+        glyphCells: 1,
+        nextDblQ: nextDblQ2,
+        nextSglQ: nextSglQ2,
+        isLineStartForbidden: true,
+        isLineEndForbidden: false,
+        canHangAtLineEnd: true,
+        endsWithExcl: false
+      };
+    }
+  }
+  if (c === "\u2026" && next === "\u2026") {
+    return {
+      charSpan: 2,
+      cellSpan: 2,
+      glyphCells: 2,
+      nextDblQ: dblQ,
+      nextSglQ: sglQ,
+      isLineStartForbidden: false,
+      isLineEndForbidden: false,
+      canHangAtLineEnd: false,
+      endsWithExcl: false
+    };
+  }
+  if (c === "." && chars[index + 1] === "." && chars[index + 2] === "." && chars[index + 3] === "." && chars[index + 4] === "." && chars[index + 5] === ".") {
+    return {
+      charSpan: 6,
+      cellSpan: 2,
+      glyphCells: 2,
+      nextDblQ: dblQ,
+      nextSglQ: sglQ,
+      isLineStartForbidden: false,
+      isLineEndForbidden: false,
+      canHangAtLineEnd: false,
+      endsWithExcl: false
+    };
+  }
+  if (c === "." && chars[index + 1] === "." && chars[index + 2] === ".") {
+    return {
+      charSpan: 3,
+      cellSpan: 1,
+      glyphCells: 1,
+      nextDblQ: dblQ,
+      nextSglQ: sglQ,
+      isLineStartForbidden: false,
+      isLineEndForbidden: false,
+      canHangAtLineEnd: false,
+      endsWithExcl: false
+    };
+  }
+  if (EXCL_PUNCT.has(c)) {
+    const hasAutoBlank = Boolean(
+      next && next !== " " && next !== "\n" && !CLOSE_BRACKETS.has(next)
+    );
+    return {
+      charSpan: 1,
+      cellSpan: hasAutoBlank ? 2 : 1,
+      glyphCells: 1,
+      nextDblQ: dblQ,
+      nextSglQ: sglQ,
+      isLineStartForbidden: true,
+      isLineEndForbidden: false,
+      canHangAtLineEnd: !hasAutoBlank,
+      endsWithExcl: true
+    };
+  }
+  if (canGroupWithNext(c, next)) {
+    return {
+      charSpan: 2,
+      cellSpan: 1,
+      glyphCells: 1,
+      nextDblQ: dblQ,
+      nextSglQ: sglQ,
+      isLineStartForbidden: false,
+      isLineEndForbidden: false,
+      canHangAtLineEnd: false,
+      endsWithExcl: false
+    };
+  }
+  const isStartForbidden = isLineStartProhibited(c, true, dblQ, sglQ, prevIsExcl);
+  const isEndForbidden = isLineEndProhibited(c, 9, dblQ, sglQ, 10);
+  const [nextDblQ, nextSglQ] = QUOTE_CHARS.has(c) ? advanceQuoteCount(c, dblQ, sglQ) : [dblQ, sglQ];
+  return {
+    charSpan: 1,
+    cellSpan: 1,
+    glyphCells: 1,
+    nextDblQ,
+    nextSglQ,
+    isLineStartForbidden: isStartForbidden,
+    isLineEndForbidden: isEndForbidden,
+    canHangAtLineEnd: isStartForbidden,
+    endsWithExcl: false
+  };
+}
+function countEojeolUnderflowCells(chars, index, col, columns, dblQ, sglQ, kinsokuMode = "hang") {
+  if (col === 0 || !isEojeolStart(chars, index)) return 0;
+  const remaining = columns - col;
+  let k = index;
+  let curDblQ = dblQ;
+  let curSglQ = sglQ;
+  let prevExcl = false;
+  const units = [];
+  while (k < chars.length && chars[k] !== " " && chars[k] !== "\n") {
+    const u = measureLogicalUnit(chars, k, curDblQ, curSglQ, prevExcl);
+    units.push(u);
+    curDblQ = u.nextDblQ;
+    curSglQ = u.nextSglQ;
+    prevExcl = u.endsWithExcl;
+    k += u.charSpan;
+  }
+  if (units.length === 0) return 0;
+  const totalCells = units.reduce((sum, u) => sum + u.cellSpan, 0);
+  let requiredCells = totalCells;
+  if (kinsokuMode === "hang" && units.length >= 2) {
+    const lastUnit = units[units.length - 1];
+    if (lastUnit.canHangAtLineEnd) {
+      requiredCells = totalCells - lastUnit.cellSpan;
+    }
+  }
+  if (requiredCells > remaining) {
+    return remaining;
+  }
+  return 0;
+}
+function countKinsokuPushUnderflowCells(chars, index, col, columns, dblQ, sglQ, prevIsExcl = false) {
+  if (col === 0) return 0;
+  const c = chars[index];
+  if (!c || c === " " || c === "\n") return 0;
+  const u0 = measureLogicalUnit(chars, index, dblQ, sglQ, prevIsExcl);
+  let cursor = index + u0.charSpan;
+  let curDblQ = u0.nextDblQ;
+  let curSglQ = u0.nextSglQ;
+  let curPrevExcl = u0.endsWithExcl;
+  let baseCells = u0.cellSpan;
+  if (u0.isLineEndForbidden && cursor < chars.length && chars[cursor] !== " " && chars[cursor] !== "\n") {
+    const uNext = measureLogicalUnit(chars, cursor, curDblQ, curSglQ, curPrevExcl);
+    baseCells += uNext.cellSpan;
+    cursor += uNext.charSpan;
+    curDblQ = uNext.nextDblQ;
+    curSglQ = uNext.nextSglQ;
+    curPrevExcl = uNext.endsWithExcl;
+  }
+  let trailingForbiddenCells = 0;
+  while (cursor < chars.length && chars[cursor] !== " " && chars[cursor] !== "\n") {
+    const uFollow = measureLogicalUnit(chars, cursor, curDblQ, curSglQ, curPrevExcl);
+    if (!uFollow.isLineStartForbidden) break;
+    trailingForbiddenCells += uFollow.glyphCells;
+    cursor += uFollow.charSpan;
+    curDblQ = uFollow.nextDblQ;
+    curSglQ = uFollow.nextSglQ;
+    curPrevExcl = uFollow.endsWithExcl;
+  }
+  if (trailingForbiddenCells > 0 && col + baseCells <= columns && col + baseCells + trailingForbiddenCells > columns) {
+    return columns - col;
+  }
+  return 0;
+}
 
 // src/core/formatter.ts
 var DEFAULT_COLUMNS = 10;
@@ -158,7 +345,9 @@ function buildFormattedCells(text, options = {}) {
     dblQuoteInit = 0,
     sglQuoteInit = 0,
     columns = DEFAULT_COLUMNS,
-    rows = DEFAULT_ROWS
+    rows = DEFAULT_ROWS,
+    wordWrapMode = "char",
+    kinsokuMode = "hang"
   } = options;
   const blockSize = columns * rows;
   const chars = text.split("");
@@ -168,6 +357,7 @@ function buildFormattedCells(text, options = {}) {
   let sglQuoteCount = sglQuoteInit;
   let isLineStart = true;
   let justWrapped = false;
+  let prevIsExcl = false;
   const pushCell = (cell) => {
     formattedCells.push(cell);
     const wasColLast = currentColumn === columns - 1;
@@ -185,21 +375,47 @@ function buildFormattedCells(text, options = {}) {
       currentColumn = 0;
       isLineStart = true;
       justWrapped = false;
+      prevIsExcl = false;
       continue;
     }
     if (char === " " && justWrapped) {
       justWrapped = false;
+      prevIsExcl = false;
       continue;
     }
+    if (wordWrapMode === "eojeol") {
+      const eojeolUnderflows = countEojeolUnderflowCells(
+        chars,
+        i,
+        currentColumn,
+        columns,
+        dblQuoteCount,
+        sglQuoteCount,
+        kinsokuMode
+      );
+      for (let u = 0; u < eojeolUnderflows; u++) {
+        pushCell({ underflow: true });
+      }
+    }
+    if (kinsokuMode === "push") {
+      const pushUnderflows = countKinsokuPushUnderflowCells(
+        chars,
+        i,
+        currentColumn,
+        columns,
+        dblQuoteCount,
+        sglQuoteCount,
+        prevIsExcl
+      );
+      for (let u = 0; u < pushUnderflows; u++) {
+        pushCell({ underflow: true });
+      }
+    }
     if (isLineEndProhibited(char, currentColumn, dblQuoteCount, sglQuoteCount, columns)) {
-      formattedCells.push({ underflow: true });
-      const wasColLast = currentColumn === columns - 1;
-      currentColumn = (currentColumn + 1) % columns;
-      isLineStart = false;
-      justWrapped = wasColLast;
+      pushCell({ underflow: true });
     }
     let isCloseQuoteOverflow = false;
-    if (currentColumn === 0 && justWrapped && formattedCells.length > 0 && CLOSE_BRACKETS.has(char)) {
+    if (kinsokuMode === "hang" && currentColumn === 0 && justWrapped && formattedCells.length > 0 && CLOSE_BRACKETS.has(char)) {
       let prevIdx = formattedCells.length - 1;
       while (prevIdx >= 0) {
         const pc = formattedCells[prevIdx];
@@ -214,14 +430,14 @@ function buildFormattedCells(text, options = {}) {
         break;
       }
       const prevCell = prevIdx >= 0 ? formattedCells[prevIdx] : null;
-      const prevIsExcl = prevCell !== null && typeof prevCell === "object" && "excl" in prevCell && !!prevCell.excl;
+      const cellPrevIsExcl = prevCell !== null && typeof prevCell === "object" && "excl" in prevCell && !!prevCell.excl;
       if (char === '"' || char === "\u201C" || char === "\u201D" || char === "\u201E") {
-        if (prevIsExcl || dblQuoteCount % 2 !== 0) {
+        if (cellPrevIsExcl || dblQuoteCount % 2 !== 0) {
           isCloseQuoteOverflow = true;
           dblQuoteCount++;
         }
       } else if (char === "'" || char === "\u2018" || char === "\u2019" || char === "\u201A") {
-        if (prevIsExcl || sglQuoteCount % 2 !== 0) {
+        if (cellPrevIsExcl || sglQuoteCount % 2 !== 0) {
           isCloseQuoteOverflow = true;
           sglQuoteCount++;
         }
@@ -229,7 +445,8 @@ function buildFormattedCells(text, options = {}) {
         isCloseQuoteOverflow = true;
       }
     }
-    if ((PUNCT.has(char) || isCloseQuoteOverflow) && currentColumn === 0 && formattedCells.length > 0) {
+    const isEllipsisDots = char === "." && chars[i + 1] === "." && chars[i + 2] === ".";
+    if (kinsokuMode === "hang" && justWrapped && !isEllipsisDots && (PUNCT.has(char) || isCloseQuoteOverflow) && currentColumn === 0 && formattedCells.length > 0) {
       const field = isCloseQuoteOverflow ? "overflowQuote" : "overflowPunct";
       let targetIdx = formattedCells.length - 1;
       while (targetIdx >= 0) {
@@ -250,14 +467,31 @@ function buildFormattedCells(text, options = {}) {
           formattedCells[targetIdx] = { char: prev, [field]: char };
         } else if (typeof prev === "object") {
           const prevAny = prev;
-          formattedCells[targetIdx] = { ...prevAny, [field]: (prevAny[field] || "") + char };
+          formattedCells[targetIdx] = {
+            ...prevAny,
+            [field]: (prevAny[field] || "") + char
+          };
         } else {
           pushCell(char);
         }
       } else {
         pushCell(char);
       }
+      prevIsExcl = false;
       continue;
+    }
+    if (SMALL_PUNCT.has(char) && chars[i + 1] && QUOTE_CHARS.has(chars[i + 1]) && CLOSE_BRACKETS.has(chars[i + 1])) {
+      const nc = chars[i + 1];
+      const isDbl = nc === '"' || nc === "\u201C" || nc === "\u201D" || nc === "\u201E";
+      const nextIsClose = isDbl ? dblQuoteCount % 2 !== 0 : sglQuoteCount % 2 !== 0;
+      if (nextIsClose) {
+        if (isDbl) dblQuoteCount++;
+        else sglQuoteCount++;
+        pushCell({ punctWithQuote: true, punct: char, quote: nc });
+        prevIsExcl = false;
+        i += 1;
+        continue;
+      }
     }
     if (QUOTE_CHARS.has(char)) {
       let isOpen;
@@ -271,65 +505,77 @@ function buildFormattedCells(text, options = {}) {
       if (!isOpen && formattedCells.length > 0) {
         const prev = formattedCells[formattedCells.length - 1];
         if (typeof prev === "string" && SMALL_PUNCT.has(prev)) {
-          formattedCells[formattedCells.length - 1] = { punctWithQuote: true, punct: prev, quote: char };
+          formattedCells[formattedCells.length - 1] = {
+            punctWithQuote: true,
+            punct: prev,
+            quote: char
+          };
+          prevIsExcl = false;
           continue;
         }
       }
       pushCell({ quoteChar: char, isOpen });
+      prevIsExcl = false;
       continue;
     }
     if (EXCL_PUNCT.has(char)) {
       pushCell({ excl: char });
       const nextChar = chars[i + 1];
       if (nextChar && nextChar !== " " && nextChar !== "\n" && !CLOSE_BRACKETS.has(nextChar)) {
-        const wasColLast = currentColumn === columns - 1;
-        formattedCells.push({ autoBlank: true });
-        currentColumn = (currentColumn + 1) % columns;
-        isLineStart = false;
-        justWrapped = wasColLast;
+        pushCell({ autoBlank: true });
       }
+      prevIsExcl = true;
       continue;
     }
     if (char === "\u2026" && chars[i + 1] === "\u2026") {
       pushCell({ ellipsis: "\u2026" });
       pushCell({ ellipsis: "\u2026" });
+      prevIsExcl = false;
       i += 1;
       continue;
     }
     if (char === "." && chars[i + 1] === "." && chars[i + 2] === "." && chars[i + 3] === "." && chars[i + 4] === "." && chars[i + 5] === ".") {
       pushCell({ ellipsis: "..." });
       pushCell({ ellipsis: "..." });
+      prevIsExcl = false;
       i += 5;
       continue;
     }
     if (char === "." && chars[i + 1] === "." && chars[i + 2] === ".") {
       pushCell({ ellipsis: "..." });
+      prevIsExcl = false;
       i += 2;
       continue;
     }
     if (OPEN_BRACKETS.has(char) || CLOSE_BRACKETS.has(char)) {
       const isOpen = OPEN_BRACKETS.has(char);
       pushCell({ bracketChar: char, isOpen });
+      prevIsExcl = false;
       continue;
     }
     if (canGroupWithNext(char, chars[i + 1])) {
       pushCell({ double: char + chars[i + 1] });
+      prevIsExcl = false;
       i += 1;
       continue;
     }
     if (isNumber(char) || isLowerAlpha(char) || isUpperAlpha(char)) {
       pushCell({ single: char, type: "alpha-num-single" });
+      prevIsExcl = false;
       continue;
     }
     if (char === " " && justWrapped) {
       justWrapped = false;
+      prevIsExcl = false;
       continue;
     }
     if (char === " " && isLineStart) {
       pushCell({ indent: true });
+      prevIsExcl = false;
       continue;
     }
     pushCell(char);
+    prevIsExcl = false;
   }
   const totalCells = formattedCells.length;
   const remainder = totalCells % blockSize;
@@ -358,10 +604,19 @@ function Manuscript({
   showRowNums = false,
   errorCells = /* @__PURE__ */ new Set(),
   highlightCells = null,
-  pageIndex = null
+  pageIndex = null,
+  wordWrapMode = "char",
+  kinsokuMode = "hang"
 }) {
   const blockSize = columns * rows;
-  const formattedCells = buildFormattedCells(text, { dblQuoteInit, sglQuoteInit, columns, rows });
+  const formattedCells = buildFormattedCells(text, {
+    dblQuoteInit,
+    sglQuoteInit,
+    columns,
+    rows,
+    wordWrapMode,
+    kinsokuMode
+  });
   const renderCell = (cell, index) => {
     const hasCursor = cursorCell === index;
     const handleClick = onCellClick ? (e) => {
@@ -460,46 +715,69 @@ function Manuscript({
     pageBlocks.push(formattedCells.slice(i, i + blockSize));
   }
   const blocksToRender = pageIndex !== null && pageIndex !== void 0 ? pageBlocks[pageIndex] ? [pageBlocks[pageIndex]] : [[]] : pageBlocks;
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "manuscript-wrapper", children: blocksToRender.map((blockCells, localIdx) => {
-    const actualPageIndex = pageIndex !== null && pageIndex !== void 0 ? pageIndex : localIdx;
-    const globalIndexOffset = actualPageIndex * blockSize;
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "manuscript-page-block", children: [
-      showRowNums && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "manuscript-row-nums", children: Array.from({ length: rows }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "manuscript-row-num", children: i + 1 }, i)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        "div",
-        {
-          className: "manuscript-grid",
-          style: {
-            gridTemplateColumns: `repeat(${columns}, 1fr)`,
-            gridTemplateRows: `repeat(${rows}, 1fr)`
-          },
-          children: blockCells.map((cell, i) => renderCell(cell, globalIndexOffset + i))
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "manuscript-page-num", children: [
-        "- ",
-        actualPageIndex + 1,
-        " -"
-      ] })
-    ] }, `page-${actualPageIndex}`);
-  }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+    "div",
+    {
+      className: "manuscript-wrapper",
+      "data-word-wrap-mode": wordWrapMode,
+      "data-kinsoku-mode": kinsokuMode,
+      children: blocksToRender.map((blockCells, localIdx) => {
+        const actualPageIndex = pageIndex !== null && pageIndex !== void 0 ? pageIndex : localIdx;
+        const globalIndexOffset = actualPageIndex * blockSize;
+        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "manuscript-page-block", children: [
+          showRowNums && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "manuscript-row-nums", children: Array.from({ length: rows }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "manuscript-row-num rkm-badge-nowrap", children: i + 1 }, i)) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "div",
+            {
+              className: "manuscript-grid",
+              style: {
+                gridTemplateColumns: `repeat(${columns}, 1fr)`,
+                gridTemplateRows: `repeat(${rows}, 1fr)`
+              },
+              children: blockCells.map((cell, i) => renderCell(cell, globalIndexOffset + i))
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "manuscript-page-num rkm-badge-nowrap", children: [
+            "- ",
+            actualPageIndex + 1,
+            " -"
+          ] })
+        ] }, `page-${actualPageIndex}`);
+      })
+    }
+  );
 }
 var Manuscript_default = Manuscript;
 
 // src/core/cursorMaps.ts
 function buildCursorMaps(text, options = {}) {
-  const { columns = DEFAULT_COLUMNS, rows = DEFAULT_ROWS } = options;
+  const {
+    dblQuoteInit = 0,
+    sglQuoteInit = 0,
+    columns = DEFAULT_COLUMNS,
+    rows = DEFAULT_ROWS,
+    wordWrapMode = "char",
+    kinsokuMode = "hang"
+  } = options;
   const blockSize = columns * rows;
   const chars = text.split("");
   const charToCell = [];
   const cellToChar = [];
-  let col = 0, dblQ = 0, sglQ = 0;
+  let col = 0;
+  let dblQ = dblQuoteInit;
+  let sglQ = sglQuoteInit;
   let isLineStart = true;
   let justWrapped = false;
   let prevIsExcl = false;
+  let lastContentCellIdx = -1;
   const advCol = () => {
     justWrapped = col === columns - 1;
     col = (col + 1) % columns;
+  };
+  const pushUnderflowCell = (charIdx) => {
+    cellToChar.push(charIdx);
+    advCol();
+    isLineStart = false;
   };
   for (let i = 0; i < chars.length; i++) {
     const c = chars[i];
@@ -521,15 +799,46 @@ function buildCursorMaps(text, options = {}) {
       prevIsExcl = false;
       continue;
     }
-    if (isLineEndProhibited(c, col, dblQ, sglQ, columns)) {
-      cellToChar.push(i);
-      advCol();
-      isLineStart = false;
+    if (wordWrapMode === "eojeol") {
+      const eojeolUnderflows = countEojeolUnderflowCells(
+        chars,
+        i,
+        col,
+        columns,
+        dblQ,
+        sglQ,
+        kinsokuMode
+      );
+      for (let u = 0; u < eojeolUnderflows; u++) {
+        pushUnderflowCell(i);
+      }
     }
-    const isOverflowChar = col === 0 && cellToChar.length > 0 && (PUNCT.has(c) || CLOSE_BRACKETS.has(c) && (c === '"' || c === "\u201C" || c === "\u201D" || c === "\u201E" ? prevIsExcl || dblQ % 2 !== 0 : c === "'" || c === "\u2018" || c === "\u2019" || c === "\u201A" ? prevIsExcl || sglQ % 2 !== 0 : true));
+    if (kinsokuMode === "push") {
+      const pushUnderflows = countKinsokuPushUnderflowCells(
+        chars,
+        i,
+        col,
+        columns,
+        dblQ,
+        sglQ,
+        prevIsExcl
+      );
+      for (let u = 0; u < pushUnderflows; u++) {
+        pushUnderflowCell(i);
+      }
+    }
+    if (isLineEndProhibited(c, col, dblQ, sglQ, columns)) {
+      pushUnderflowCell(i);
+    }
+    const isCloseQuoteOverflow = kinsokuMode === "hang" && col === 0 && justWrapped && cellToChar.length > 0 && CLOSE_BRACKETS.has(c) && (c === '"' || c === "\u201C" || c === "\u201D" || c === "\u201E" ? prevIsExcl || dblQ % 2 !== 0 : c === "'" || c === "\u2018" || c === "\u2019" || c === "\u201A" ? prevIsExcl || sglQ % 2 !== 0 : true);
+    const isEllipsisDots = c === "." && chars[i + 1] === "." && chars[i + 2] === ".";
+    const isOverflowChar = kinsokuMode === "hang" && col === 0 && justWrapped && !isEllipsisDots && cellToChar.length > 0 && (PUNCT.has(c) || isCloseQuoteOverflow);
     if (isOverflowChar) {
-      charToCell[i] = cellToChar.length - 1;
-      cellToChar[cellToChar.length - 1] = i + 1;
+      const targetIdx = lastContentCellIdx >= 0 ? lastContentCellIdx : cellToChar.length - 1;
+      charToCell[i] = targetIdx;
+      for (let k = targetIdx; k < cellToChar.length; k++) {
+        cellToChar[k] = i + 1;
+      }
       if (QUOTE_CHARS.has(c)) [dblQ, sglQ] = advanceQuoteCount(c, dblQ, sglQ);
       prevIsExcl = false;
       continue;
@@ -545,46 +854,57 @@ function buildCursorMaps(text, options = {}) {
         nextIsClose = sglQ % 2 !== 0;
       }
       if (nextIsClose) {
+        lastContentCellIdx = cellToChar.length;
         cellToChar.push(i + 2);
         charToCell[i + 1] = cellToChar.length - 1;
         if (QUOTE_CHARS.has(chars[i + 1])) [dblQ, sglQ] = advanceQuoteCount(chars[i + 1], dblQ, sglQ);
         advCol();
+        isLineStart = false;
         prevIsExcl = false;
         i += 1;
         continue;
       }
     }
     if (c === "\u2026" && chars[i + 1] === "\u2026") {
+      lastContentCellIdx = cellToChar.length;
       cellToChar.push(i + 1);
       advCol();
       charToCell[i + 1] = cellToChar.length;
+      lastContentCellIdx = cellToChar.length;
       cellToChar.push(i + 2);
       advCol();
+      isLineStart = false;
       prevIsExcl = false;
       i += 1;
       continue;
     }
     if (c === "." && chars[i + 1] === "." && chars[i + 2] === "." && chars[i + 3] === "." && chars[i + 4] === "." && chars[i + 5] === ".") {
+      lastContentCellIdx = cellToChar.length;
       cellToChar.push(i + 3);
       charToCell[i + 1] = charToCell[i + 2] = cellToChar.length - 1;
       advCol();
+      lastContentCellIdx = cellToChar.length;
       cellToChar.push(i + 6);
       charToCell[i + 3] = charToCell[i + 4] = charToCell[i + 5] = cellToChar.length - 1;
       advCol();
+      isLineStart = false;
       prevIsExcl = false;
       i += 5;
       continue;
     }
     if (c === "." && chars[i + 1] === "." && chars[i + 2] === ".") {
+      lastContentCellIdx = cellToChar.length;
       cellToChar.push(i + 3);
       charToCell[i + 1] = charToCell[i + 2] = cellToChar.length - 1;
       advCol();
+      isLineStart = false;
       prevIsExcl = false;
       i += 2;
       continue;
     }
     if (EXCL_PUNCT.has(c)) {
       charToCell[i] = cellToChar.length;
+      lastContentCellIdx = cellToChar.length;
       const nextChar = chars[i + 1];
       if (nextChar && nextChar !== " " && nextChar !== "\n" && !CLOSE_BRACKETS.has(nextChar)) {
         cellToChar.push(i + 1);
@@ -597,6 +917,7 @@ function buildCursorMaps(text, options = {}) {
       }
     }
     if (canGroupWithNext(c, chars[i + 1])) {
+      lastContentCellIdx = cellToChar.length;
       cellToChar.push(i + 2);
       charToCell[i + 1] = cellToChar.length - 1;
       advCol();
@@ -605,21 +926,110 @@ function buildCursorMaps(text, options = {}) {
       i += 1;
       continue;
     }
+    lastContentCellIdx = cellToChar.length;
     cellToChar.push(i + 1);
     advCol();
     isLineStart = false;
     prevIsExcl = EXCL_PUNCT.has(c);
   }
   charToCell[chars.length] = cellToChar.length;
-  while (cellToChar.length < blockSize) cellToChar.push(chars.length);
+  const totalCells = cellToChar.length;
+  const remainder = totalCells % blockSize;
+  if (remainder !== 0 || totalCells === 0) {
+    const paddingNeeded = totalCells === 0 ? blockSize : blockSize - remainder;
+    for (let i = 0; i < paddingNeeded; i++) {
+      cellToChar.push(chars.length);
+    }
+  }
   return { charToCell, cellToChar, columns, rows };
+}
+
+// src/core/typography.ts
+var KOREAN_TYPOGRAPHY_CLASSES = {
+  /** 본문·미리보기·문장 카드: 어절 단위 줄바꿈 + 긴 영문/URL 안전 분할 + 문단 끝 고아 단어 방지 */
+  prose: "rkm-prose-ko",
+  proseKo: "rkm-prose-ko",
+  /** 제목·섹션 헤더·배너: 어절 단위 줄바꿈 + 줄 길이 균형 */
+  heading: "rkm-heading-balance",
+  headingBalance: "rkm-heading-balance",
+  /** 상태 배지·버튼·행/페이지 번호: 줄바꿈 금지 단일 행 유지 */
+  badge: "rkm-badge-nowrap",
+  badgeNowrap: "rkm-badge-nowrap",
+  /** 줄바꿈 보존 텍스트: 개행(\n) 보존 + 한국어 어절 줄바꿈 */
+  preLine: "rkm-pre-line"
+};
+var KOREAN_TYPOGRAPHY_STYLES = {
+  prose: {
+    wordBreak: "keep-all",
+    overflowWrap: "break-word",
+    textWrap: "pretty"
+  },
+  heading: {
+    wordBreak: "keep-all",
+    overflowWrap: "break-word",
+    textWrap: "balance"
+  },
+  badge: {
+    whiteSpace: "nowrap",
+    flexShrink: 0
+  },
+  preLine: {
+    whiteSpace: "pre-line",
+    wordBreak: "keep-all",
+    overflowWrap: "break-word",
+    textWrap: "pretty"
+  }
+};
+var KOREAN_TYPOGRAPHY_CSS_RULES = {
+  prose: "word-break: keep-all; overflow-wrap: break-word; text-wrap: pretty;",
+  heading: "word-break: keep-all; overflow-wrap: break-word; text-wrap: balance;",
+  badge: "white-space: nowrap; flex-shrink: 0;",
+  preLine: "white-space: pre-line; word-break: keep-all; overflow-wrap: break-word; text-wrap: pretty;"
+};
+var KOREAN_TYPOGRAPHY_STYLESHEET = `
+.rkm-prose-ko {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+.rkm-heading-balance {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+.rkm-badge-nowrap {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rkm-pre-line {
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+`.trim();
+function getKoreanTypographyClass(preset = "prose") {
+  return KOREAN_TYPOGRAPHY_CLASSES[preset];
+}
+function getKoreanTypographyStyle(preset = "prose") {
+  return { ...KOREAN_TYPOGRAPHY_STYLES[preset] };
+}
+function getKoreanTypographyCss(preset) {
+  if (!preset) return KOREAN_TYPOGRAPHY_STYLESHEET;
+  return KOREAN_TYPOGRAPHY_CSS_RULES[preset];
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   BLOCK_SIZE,
   CLOSE_BRACKETS,
   CLOSE_QUOTE,
+  DEFAULT_COLUMNS,
+  DEFAULT_ROWS,
   EXCL_PUNCT,
+  KOREAN_TYPOGRAPHY_CLASSES,
+  KOREAN_TYPOGRAPHY_CSS_RULES,
+  KOREAN_TYPOGRAPHY_STYLES,
+  KOREAN_TYPOGRAPHY_STYLESHEET,
   Manuscript,
   ManuscriptDefault,
   OPEN_BRACKETS,
@@ -630,9 +1040,16 @@ function buildCursorMaps(text, options = {}) {
   buildCursorMaps,
   buildFormattedCells,
   canGroupWithNext,
+  countEojeolUnderflowCells,
+  countKinsokuPushUnderflowCells,
+  getKoreanTypographyClass,
+  getKoreanTypographyCss,
+  getKoreanTypographyStyle,
+  isEojeolStart,
   isLineEndProhibited,
   isLineStartProhibited,
   isLowerAlpha,
   isNumber,
-  isUpperAlpha
+  isUpperAlpha,
+  measureLogicalUnit
 });

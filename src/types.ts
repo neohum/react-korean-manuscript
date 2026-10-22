@@ -64,6 +64,12 @@ export interface SingleCell {
   type: 'alpha-num-single';
 }
 
+/** 한국어 어절 줄바꿈 모드 ('char': 1칸 1글자 기본, 'eojeol': 어절 단위 줄바꿈) */
+export type WordWrapMode = 'char' | 'eojeol';
+
+/** 행두/행말 금칙처리 모드 ('hang': 걸침 팬텀 셀 기본, 'push': 다음 행 밀어내기) */
+export type KinsokuMode = 'hang' | 'push';
+
 /** buildCursorMaps, buildFormattedCells 반환값 */
 export interface CursorMaps {
   /** charToCell[charIndex] = cellIndex: 문자 인덱스 → 셀 인덱스 */
@@ -110,4 +116,8 @@ export interface ManuscriptProps {
   highlightCells?: Set<number> | null;
   /** 특정 페이지만 렌더링 (썸네일 모드) */
   pageIndex?: number | null;
+  /** 한국어 줄바꿈 모드 (기본값: 'char') */
+  wordWrapMode?: WordWrapMode;
+  /** 행두/행말 금칙처리 모드 (기본값: 'hang') */
+  kinsokuMode?: KinsokuMode;
 }
